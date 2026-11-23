@@ -1,0 +1,15 @@
+LIBRARY w7shim
+EXPORTS
+  WaitOnAddress
+  WakeByAddressAll
+  WakeByAddressSingle
+  RtlWaitOnAddress
+  RtlWakeAddressAll
+  RtlWakeAddressSingle
+  RtlAddGrowableFunctionTable
+  GetSystemTimePreciseAsFileTime
+  GetThreadDescription
+  CreatePseudoConsole
+  ClosePseudoConsole
+  ResizePseudoConsole
+  ProcessPrng
