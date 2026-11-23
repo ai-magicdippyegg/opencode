@@ -15,7 +15,7 @@ import { OauthRedirect } from "../../oauth/redirect.js"
 import { Provider } from "../../provider.js"
 import { SessionAffinity } from "../../session/affinity.js"
 import type { PluginInternal } from "../internal.js"
-import { configuredSettings } from "./configured.js"
+import { configuredBaseURL } from "./configured.js"
 import { storedCredential } from "./credential-settings.js"
 import { OpenAISubscriptionModels } from "./openai-subscription-models.js"
 import { ProviderRefresh } from "./refresh.js"
@@ -301,7 +301,7 @@ export const ChatGPTPlugin = define({
       { providerID },
     )
     // Config applies after provider plugins, so read it here: a custom baseURL may not decode zstd.
-    const configured = yield* configuredSettings(providerID)
+    const customBaseURL = yield* configuredBaseURL(providerID)
     yield* ctx.provider.transform((providers) => {
       const item = providers.get(providerID)
       if (!item) return
@@ -312,7 +312,7 @@ export const ChatGPTPlugin = define({
           transport: "http",
           compaction: { type: "summary" },
           // ChatGPT sign-in rejects uncompressed bodies over ~1 MiB and decodes zstd.
-          ...(configured?.baseURL === undefined ? { encoding: provider.settings?.encoding ?? "zstd" } : {}),
+          ...(customBaseURL === undefined ? { encoding: provider.settings?.encoding ?? "zstd" } : {}),
         })
       })
       const updated = providers.get(providerID)
